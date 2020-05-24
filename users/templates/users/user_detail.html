@@ -1,0 +1,47 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section" id="customizeBorder">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        <div class="media-body">
+            {%if user.profile.varifiedProfile %}
+              <h4 class="font-weight-light account-heading text-camelcase">{{ user.profile.name }}<span data-toggle="tooltip" data-placement="left" title="Verified Account" style="cursor:pointer; color:#00ff00;">&#10041;</span></h4>
+            {%else%}
+              <h4 class="font-weight-light account-heading text-camelcase">{{ user.profile.name }}<span data-toggle="tooltip" data-placement="left" title="Non-Verified Account" style="cursor:pointer; color:#ff0000;">&#10041;</span></h4>
+            {%endif%}
+            <h4 class="font-weight-light">{{ user.username }}({{ user.profile.enrollment }}) - {{user.profile.branch}}</h4>
+            <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      </div>
+      {%if request.user.id == user.id%}
+        <button class="btn btn-outline-info" onClick="window.location='/updateProfile';">Update Profile</button>
+      {%else%}
+      <a href="{% url 'detail-message' user.id%}"><button class="btn btn-outline-info btn-sm">Message</button></a>
+      <a href="{% url 'add-friend' user.id%}"><button class="btn btn-outline-success btn-sm">Follow</button></a>
+      {%endif%}
+      </div>
+      <h3 class="font-weight-light mb-4 mt-5">{{user.username}}'s Posts</h3>
+      {% for post in posts %}
+        <article class="media content-section" id="customizeBorder">
+          {%if post.author.id == request.user.id%}
+            <a class="mr-2" href="{% url 'profile'%}"><img src="{{ post.author.profile.image.url }}" class="rounded-circle article-img"></a>
+          {%else%}
+            <a class="mr-2" href="{% url 'user-profile' post.author.id%}"><img src="{{ post.author.profile.image.url }}" class="rounded-circle article-img"></a>
+          {%endif%}
+            <div class="media-body">
+              <div class="article-metadata">
+                {%if post.author.id == request.user.id%}
+                  <a class="mr-2" href="{% url 'profile'%}">You</a>
+                {%else%}
+                  <a class="mr-2" href="{% url 'user-profile' post.author.id%}">{{ post.author }}</a>
+                {%endif%}
+                <small class="text-muted">{{ post.date_posted|date:"M d, Y" }}</small>
+              </div>
+              <h2><a class="article-title">{{ post.title }}</a></h2>
+              <p class="article-content">{{ post.content }}<a href="{% url 'post-detail' post.id %}" class="font-weight-light text-muted" style="text-decoration: none"> . . . read more</a></p>
+              <small><p class="text-right text-muted">TV: {{post.count}} | UV: {{post.uniqueCount}}</p></small>
+            </div>
+          </article>
+    {% endfor %}
+{% endblock content %}

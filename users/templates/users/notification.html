@@ -1,0 +1,13 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% for data in dataSet %}
+        <article class="media content-section" id="customizeBorder">
+            <div class="media-body">
+              <div class="article-metadata">
+                <small class="text-muted">On {{ data.timeStamp }}</small>
+              </div>
+              <p class="article-content">{{ data.notice }}</p>
+            </div>
+          </article>
+    {% endfor %}
+{% endblock content %}

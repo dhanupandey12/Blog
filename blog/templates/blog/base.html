@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo|Poiret+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Cinzel&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+    <title>Tech Talk</title>
+</head>
+<style>
+  .dot {
+    height: 10px;
+    width: 10px;
+    background-color: #1ed2f4;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .seenDot {
+    height: 10px;
+    width: 10px;
+    background-color: #4287FF;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .unseenDot {
+    height: 10px;
+    width: 10px;
+    background-color: #FF4242;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  body{
+    font-family: 'Poiret One', cursive;
+    font-family: 'Nanum Myeongjo', serif;
+    letter-spacing: 0.05em;
+    background-color: #EAE7DC;
+  }
+  #customizeBorder{
+    border-radius: 1em;
+  }
+  #customizeBorder2{
+    border-radius: 1em;
+  }
+  #customizeBorder3{
+    border-radius: 1em;
+    border-color: #EAE7DC;
+    border-width: 0.1em;
+  }
+  #customizeBorder3:hover{
+    border-radius: 1em;
+    border-color: #ffffff;
+  }
+  #customizeBorder2:hover{
+    border-radius: 1em;
+    border-color: #4287FF;
+  }
+  #nameWeb{
+    font-family: 'Cinzel', serif;
+  }
+</style>
+<body>
+    <header class="site-header">
+            <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+                <div class="container">
+                <a class="navbar-brand mr-4" href="{% url 'blog-home' %}" id='nameWeb'>Tech Talk</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                      {%if user.is_authenticated%}
+                      <a class="nav-item nav-link ml-2" href="{% url 'search' %}">Search</a>
+                      {%if notice%}
+                        <a class="nav-item nav-link ml-2" href="{% url 'my-notice' %}">Notifications <sup class="dot"></sup></a>
+                      {%else%}
+                      <a class="nav-item nav-link ml-2" href="{% url 'my-notice' %}">Notifications</a>
+                      {%endif%}
+                      {%if flag %}
+                        <a class="nav-item nav-link ml-2" href="{% url 'message-summary' %}">Messages <sup class="dot"></sup></a>
+                      {%else%}
+                        <a class="nav-item nav-link ml-2" href="{% url 'message-summary' %}">Messages</a>
+                      {%endif%}
+                      {%if request.user.profile.enrollment == '111X111'%}
+                        <a class="nav-item nav-link ml-2" href="{% url 'profile' %}">{{request.user}} <sup class="dot"></sup></a>
+                      {%else%}
+                        <a class="nav-item nav-link ml-2" href="{% url 'profile' %}">{{request.user}}</a>
+                      {%endif%}
+                      <a class="nav-item nav-link ml-2" href="{% url 'logout' %}">Logout</a>
+                      {%else%}
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                      {%endif%}
+                    </div>
+                </div>
+                </div>
+            </nav>
+     </header>
+     <main role="main" class="container">
+            <div class="row">
+              <div class="col-md-8">
+                {%if messages%}
+                  {%for message in messages%}
+                    <div class="alert alert-{{message.tags}}">
+                      {{message}}
+                    </div>
+                  {%endfor%}
+                {%endif%}
+                {% block content %}{% endblock %}
+              </div>
+              
+              
+                <div class="col-md-4">
+                  <div class="content-section card sticky-top" id="customizeBorder">
+                    <h3>Quick Links</h3>
+                    <br>
+                    <ul class="list-group">
+                        <a href="{% url 'blog-trend' %}" style="text-decoration: none;" class="mb-1"><li class="list-group-item list-group-item font-weight-light text-center" id="customizeBorder2"><strong>Post of the Day</strong></li></a>
+                        <a href="{% url 'my-friend' %}" style="text-decoration: none;" class="mb-1"><li class="list-group-item list-group-item font-weight-light text-center" id="customizeBorder2"><strong>Following</strong></li></a>
+                        <a href="{% url 'my-followers' %}" style="text-decoration: none;" class="mb-1"><li class="list-group-item list-group-item font-weight-light text-center" id="customizeBorder2"><strong>Followers</strong></li></a>
+                        <a href="{% url 'blog-about' %}" style="text-decoration: none;" class="mb-1"><li class="list-group-item list-group-item font-weight-light text-center" id="customizeBorder2"><strong>All Users</strong></li></a>
+                        <a href="{% url 'reviews' %}" style="text-decoration: none;" class="mb-1"><li class="list-group-item list-group-item font-weight-light text-center" id="customizeBorder2"><strong>Reviews</strong></li></a>
+                      </ul>
+                    </p>
+                    <br>
+                    {%if user.is_authenticated%}
+                    <div class="text-right"> 
+                      <a class="nav-item nav-link" href="{% url 'post-create' %}"><button class="btn btn-success btn-block">Add new Post</button></a>
+                      <a class="nav-item nav-link" href="{% url 'add-reviews' %}"><button class="btn btn-success btn-block">Write a Review</button></a>
+                    </div>
+                    {%endif%}
+                  </div>
+                </div>
+            </div>
+     </main>          
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</body>
+<script>
+  window.onload = function() { // when the DOM is ready...
+    //  Move the window's scrollTop to the offset position of #now
+    $(window).scrollTop($('#now').offset().top);
+}
+</script>
+</html>

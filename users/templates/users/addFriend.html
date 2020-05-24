@@ -1,0 +1,4 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <h3 class="font-weight-light"><a href="{% url 'user-profile' data.id%}" style="text-decoration: none">{{data.username}}</a> has been added to your Friend List</h3>
+{% endblock content %}

@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% for data in dataSet %}
+        <article class="media content-section" id="customizeBorder">
+          <img src="{{ data.user.profile.image.url }}" class="rounded-circle article-img">
+            <div class="media-body">
+              <div class="article-metadata">
+                <a class="mr-2" href="{% url 'user-profile' data.user.id%}">{{ data.user.profile.name }}</a>
+                <small class="text-muted">Joined on {{ data.user.date_joined }}</small>
+              </div>
+              <p class="article-content">{{ data.review }}</p>
+            </div>
+          </article>
+    {% endfor %}
+{% endblock content %}

@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% for post in posts %}
+        <article class="media content-section" id="customizeBorder3">
+          {%if post.author.id == request.user.id%}
+            <a class="mr-2" href="{% url 'profile'%}"><img src="{{ post.author.profile.image.url }}" class="rounded-circle article-img"></a>
+          {%else%}
+            <a class="mr-2" href="{% url 'user-profile' post.author.id%}"><img src="{{ post.author.profile.image.url }}" class="rounded-circle article-img"></a>
+          {%endif%}
+            <div class="media-body">
+              <div class="article-metadata">
+                {%if post.author.id == request.user.id%}
+                  <a class="mr-2" href="{% url 'profile'%}">You</a>
+                {%else%}
+                  {%if post.author.profile.varifiedProfile%}
+                    <a class="mr-2" href="{% url 'user-profile' post.author.id%}">{{ post.author }}<span data-toggle="tooltip" data-placement="left" title="Verified Account" style="cursor:pointer; color:#00ff00;">&#10041;</span></a>
+                  {%else%}
+                    <a class="mr-2" href="{% url 'user-profile' post.author.id%}">{{ post.author }}<span data-toggle="tooltip" data-placement="left" title="Verified Account" style="cursor:pointer; color:#ff0000">&#10041;</span></a>
+                  {%endif%}
+                {%endif%}
+                <small class="text-muted">{{ post.date_posted|date:"M d, Y" }}</small>
+              </div>
+              <h3 class="mb-3"><a class="article-title">{{ post.title }}</a></h3>
+              <p class="article-content">{{ post.content }}<a href="{% url 'post-detail' post.id %}" class="font-weight-light text-muted" style="text-decoration: none"> . . . read more</a></p>
+              <small><p class="text-right text-muted">TV: {{post.count}} | UV: {{post.uniqueCount}}</p></small>
+            </div>
+          </article>
+    {% endfor %}
+{% endblock content %}

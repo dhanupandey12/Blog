@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+    {% for data in dataSet %}
+        <article class="media content-section">
+          <div class="media-body">
+              <div class="article-metadata">
+                <a class="mr-2" href="{% url 'user-profile' data.sender_id %}">{{ data.senderName }}</a>
+                <small class="text-muted">{{ data.timeStamp}}</small>
+              </div>
+              <p class="article-content">{{ data.messageText }}</p>
+            </div>
+          </article>
+    {% endfor %}
+{% endblock content %}

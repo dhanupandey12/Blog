@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h3 class="font-weight-light mb-4">Followers</h3>
+    {% for data in DataSet%}
+    {%if request.user.id != data.id%}
+        <div class="content-section" id="customizeBorder">
+            <div class="media">
+                <a href="{% url 'user-profile' data.id%}"><img class="rounded-circle account-img" src="{{ data.profile.image.url }}"></a>
+                <div class="media-body">
+                    {%if data.profile.varifiedProfile%}
+                        <h3 class=" text-camelcase">{{ data.profile.name }}<span data-toggle="tooltip" data-placement="left" title="Verified Account" style="cursor:pointer; color:#00ff00;">&#10041;</span></h3>
+                    {%else%}
+                        <h3 class=" text-camelcase">{{ data.profile.name }}<span data-toggle="tooltip" data-placement="left" title="Non-Verified Account" style="cursor:pointer; color:#ff0000;">&#10041;</span></h3>
+                    {%endif%}
+                    <h4 class="font-weight-light">{{ data.email }}</h4>
+                    <a href="{% url 'detail-message' data.id%}"><button class="btn btn-outline-info btn-sm mt-3 mr-3">Message</button></a>
+                    {%if data in avoidList %}
+                        <a href="{% url 'remove-friend' data.id%}"><button class="btn btn-outline-danger btn-sm mt-3">Unfollow</button></a>
+                    {%else%}
+                        <a href="{% url 'add-friend' data.id%}"><button class="btn btn-outline-success btn-sm mt-3">Follow</button></a>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    {%endif%}
+    {%endfor%}
+{% endblock content %}

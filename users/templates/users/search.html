@@ -1,0 +1,33 @@
+{% extends 'blog/base.html' %}
+{%load crispy_forms_tags%}
+{% block content %}
+    <h3 class="font-weight-light">Search Page</h3>
+    <form method="post" class="mt-3">
+            {%csrf_token%}
+            <input type="text" name="searchData" id="searchData" class="form-control">
+    </form>
+    {%if postData%}
+    <h5 class="font-weight-light mt-3 mb-3">{{h1}}</h5>
+    <ul>
+    {% for data in postData%}
+        <li><p class="font-weight-light">Title: <a href="{% url 'post-detail' data.id%}" style="text-decoration:none">{{data.title}}</a></p></li>
+    {%endfor%}
+    {%endif%}
+    </ul>
+    <br>
+    {%if userData%}
+    <h5 class="font-weight-light mt-3 mb-3">{{h2}}</h5>
+    <ul>
+    {% for data in userData%}
+        <li><p class="font-weight-light">Name: <a href="{% url 'user-profile' data.user_id%}" style="text-decoration:none">{{data.name}}</a></p></li>
+    {%endfor%}
+    </ul>
+    {%endif%}
+    {% if not postData and not userData and request.method == 'POST'%}
+        <p class="text-danger">No matching User and Post found for given input</p>
+    {% elif not userData and request.method == 'POST'%}
+        <p class="text-danger">No matching User found for given input</p>
+    {% elif not postData and request.method == 'POST'%}
+        <p class="text-danger">No matching Post found for given input</p>
+    {%endif%}
+{% endblock content %}

@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+{%load crispy_forms_tags%}
+{% block content %}
+    <h5 class="font-weight-light mt-3 mb-3">Message Summary</h5>
+    <ul>
+    {% for data in messageMD%}
+    {%if data.AllRead == True%}
+        <li><p class="font-weight-light">Message from <a href="{% url 'detail-message' data.sender%}" style="text-decoration:none">{{data.senderName}}</a></p></li>
+    {%else%}
+        <li><p class="font-weight-light">Message from <a href="{% url 'detail-message' data.sender%}" style="text-decoration:none">{{data.senderName}}<sup class="dot"></sup></a></p></li>
+    {%endif%}
+    {%endfor%}
+    </ul>
+{% endblock content %}

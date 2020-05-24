@@ -1,0 +1,38 @@
+{% extends 'blog/base.html' %}
+{%load crispy_forms_tags%}
+{% block content %}
+    {% for data in dataSet %}
+        <article class="media content-section" id="customizeBorder">
+          <div class="media-body">
+            {%if request.user.id != data.sender_id %}
+              <div class="article-metadata">
+                    <a class="mr-2" href="{% url 'user-profile' data.sender_id %}">{{ data.senderName }}</a>
+                    <small class="text-muted">{{ data.timeStamp}}</small>
+              </div>
+              <p class="article-content">{{ data.messageText }}</p>
+            {%else%}
+                <div class="article-metadata text-right">
+                    <a class="mr-2" href="{% url 'profile'%}">You</a>
+                    {%if data.seen%}
+                        <small class="text-muted">{{ data.timeStamp}} <span class="seenDot"></span></small>
+                    {%else%}
+                        <small class="text-muted">{{ data.timeStamp}} <span class="unseenDot"></span></small>
+                    {%endif%}
+                </div>
+                <p class="article-content text-right">{{ data.messageText }}</p>
+            {%endif%}
+            </div>
+          </article>
+    {% endfor %}
+    <div id="now">
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class='form-group'>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="text-right mb-3">
+            <button class="btn btn-outline-info" type="submit">SEND</button>
+        </div>
+    </form>
+{% endblock content %}
